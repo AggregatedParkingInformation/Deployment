@@ -4,7 +4,7 @@
 
 1. Make sure you have `git lfs` and the `docker compose` plugin installed.
 2. Clone this repository.
-3. Make sure downloading from the GitHub LFS server has worked by checking the size of the parking-service/initdb/backup.sql file. It should be over 100MB.
+3. Make sure downloading from the GitHub LFS server has worked by checking the size of the parking-service/initdb/backup.sql file. It should be about 400MB.
 3. `cd` in both directories (`system` and `parking-service`) and run `docker compose up -d` in each of them
 
 Please change all passwords labeled `CHANGE_ME` inside both docker compose files if running publicly.
