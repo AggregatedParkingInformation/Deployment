@@ -1,0 +1,41 @@
+x-env:
+  environment: &env
+    POSTGRES_USER: parking # don't change
+    POSTGRES_PASSWORD: CHANGE_ME
+    POSTGRES_DB: parking-service-db # don't change
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      <<: *env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U parking -d parking-service-db"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [internal]
+
+  service:
+    image: goldenkoopa/parking-service:final
+    restart: unless-stopped
+    environment:
+      <<: *env
+      ALLOWED_ORIGINS: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [internal]
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  db-data:

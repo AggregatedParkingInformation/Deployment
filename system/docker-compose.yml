@@ -1,0 +1,40 @@
+x-env:
+  environment: &env
+    POSTGRES_USER: api_db_user
+    POSTGRES_PASSWORD: CHANGE_ME
+    POSTGRES_DB: parking-db
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    volumes:
+      - api-db-data:/var/lib/postgresql/data
+    environment:
+      <<: *env
+
+  backend:
+    image: goldenkoopa/api-backend:final
+    depends_on:
+      postgres:
+        condition: service_started
+    ports:
+      - 8080:8080
+    environment:
+      API_DOCS_ENABLED: false
+      APP_ENV: prod
+      PROD_ADMIN_USERNAME: admin
+      PROD_ADMIN_PASSWORD: CHANGE_ME
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      << : *env
+
+  frontend:
+    image: goldenkoopa/api-frontend:final
+    ports:
+      - 5173:80
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+      VITE_PARKING_API_URL: http://localhost:3000
+    
+volumes:
+  api-db-data:
