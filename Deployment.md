@@ -11,8 +11,6 @@ Please change all passwords labeled `CHANGE_ME` inside both docker compose files
 
 The first admin account is created with the credentials given inside the docker compose file upon first start of the backend. New user registration is always open.
 
-> NOTE: On unix systems it might be required to run `dos2unix` on `parking-service/initdb/backup.sql`! If the parking-service was already started and failed to load any data, delete the volume using `docker compose down -v`.
-
 ### Building your own images
 All subprojects (`Backend`, `Frontend` and `Parking-Spaces-Service`) have Dockerfiles in their project root. Run `docker build -t {IMAGE_NAME} .` to build yourself.
 Note that you will have to adjust the image name to yours in both docker compose files.
